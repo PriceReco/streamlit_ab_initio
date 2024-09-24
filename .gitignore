@@ -1,0 +1,36 @@
+# Virtual Environment
+venv/
+.env/
+
+# Python Bytecode
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Distribution / packaging
+*.egg-info/
+dist/
+build/
+*.whl
+
+# IDE / Editor directories and files
+.vscode/
+.idea/
+*.swp
+*.swo
+*.tmp
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints
+
+# Test results
+coverage.xml
+*.cover
+*.log
+nosetests.xml
+test_*.xml
+
+# Python-specific files
+*.DS_Store
+*.egg
