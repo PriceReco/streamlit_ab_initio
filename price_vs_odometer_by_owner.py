@@ -71,7 +71,7 @@ def plot_price_vs_odo_by_owner(data, num_samples, selected_make, selected_model,
 
             # Add data points and regression line for the full data
             fig.add_trace(go.Scatter(x=X_full.flatten(), y=y_full, mode='markers', name=f'Owners: {no_of_owners} (Full)'))
-            fig.add_trace(go.Scatter(x=X_smooth_sorted.flatten(), y=y_pred_full_sorted, mode='lines', name=f'{no_of_owners} Owners (Full 2nd Degree fit)'))
+            fig.add_trace(go.Scatter(x=X_smooth_sorted.flatten(), y=y_pred_full_sorted, mode='lines', name=f'Owners: {no_of_owners} (Full 2nd Degree fit)'))
 
             # Store the coefficients and R² value
             intercept_2_full = model_2.named_steps['ridge'].intercept_
@@ -119,8 +119,8 @@ def plot_price_vs_odo_by_owner(data, num_samples, selected_make, selected_model,
             y_pred_sample_sorted = y_pred_sample_smooth[sorted_indices_full]
 
             # Add the sample data points and sample regression line
-            fig.add_trace(go.Scatter(x=X_sample.flatten(), y=y_sample, mode='markers', name=f'Sample Data (Owners: {no_of_owners})', marker=dict(symbol='x')))
-            fig.add_trace(go.Scatter(x=X_smooth_sorted.flatten(), y=y_pred_sample_sorted, mode='lines', line=dict(dash='dash'), name=f'{no_of_owners} Owners (Sample 2nd Degree fit)'))
+            fig.add_trace(go.Scatter(x=X_sample.flatten(), y=y_sample, mode='markers', name=f'Owners: {no_of_owners} (Sample Data)', marker=dict(symbol='x')))
+            fig.add_trace(go.Scatter(x=X_smooth_sorted.flatten(), y=y_pred_sample_sorted, mode='lines', line=dict(dash='dash'), name=f'Owners: {no_of_owners} (Sample 2nd Degree fit)'))
 
             # Store the coefficients and R² value
             intercept_2_sample = model_2_sample.named_steps['ridge'].intercept_

@@ -11,7 +11,6 @@ import streamlit as st
 
 def polynomial_regression(odometer_filtered_data, num_samples, selected_make, selected_model, selected_variant, selected_fuel_type, selected_no_of_owners):
     # Group data by year of manufacture
-    print(odometer_filtered_data['Mfg_Year'].value_counts())
     
     grouped_data = odometer_filtered_data.groupby('Mfg_Year')
 

@@ -29,30 +29,17 @@ def filter_data(data: pd.DataFrame, selected_make: str, selected_model: str, sel
     return filtered_data
 
 
-def configure_sidebar(filtered_data: pd.DataFrame) -> tuple:
-    st.sidebar.markdown("<h3>Select KM Range & No. of Points for Sample Data</h3>", unsafe_allow_html=True)
-    odometer_min = int(filtered_data['Odometer_Reading'].min())
-    odometer_max = int(filtered_data['Odometer_Reading'].max())
-    selected_odometer_range = st.sidebar.slider('Select Odometer Reading Range for 2nd Degree Fit (Sample Points):',
-                                                min_value=odometer_min,
-                                                max_value=odometer_max,
-                                                value=(odometer_min, odometer_max))
-    
-    num_samples = st.sidebar.slider('Select Number of Samples for 2nd Degree Fit (Sample Points):',
-                                    min_value=1,
-                                    max_value=30,
-                                    value=5)
-    return selected_odometer_range, num_samples
-
-
 def main():
-    data = utils.load_data('data/Dataset_15Jan 2.xlsx')
+    # data = utils.load_data('data/Dataset_15Jan 2.xlsx')
+    data = utils.load_data('data/combined_data.xlsx')
     selected_make, selected_model, selected_variant, selected_fuel_type, selected_no_of_owners = sidebar_components.create_sidebar(data)
     filtered_data = filter_data(data, selected_make, selected_model, selected_variant, selected_fuel_type, selected_no_of_owners)
-    # filtered_data_no_outliers = utils.remove_outliers(filtered_data, 'Odometer_Reading')
-    selected_odometer_range, num_samples = configure_sidebar(filtered_data)
+    filtered_data_no_outliers = utils.remove_outliers(filtered_data, 'Odometer_Reading')
+    selected_odometer_range, num_samples = sidebar_components.configure_sidebar(filtered_data_no_outliers)
     odometer_filtered_data = filtered_data[(filtered_data['Odometer_Reading'] >= selected_odometer_range[0]) &
                                                        (filtered_data['Odometer_Reading'] <= selected_odometer_range[1])]
+    
+    print(odometer_filtered_data.value_counts())
     
     fig_comparison, coeff_df_2nd_degree, coeff_list_2nd_degree_sample_points = polynomial_regression(odometer_filtered_data, num_samples, selected_make, selected_model, selected_variant, selected_fuel_type, selected_no_of_owners)
     st.sidebar.title('Settings')
