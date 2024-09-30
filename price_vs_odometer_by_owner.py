@@ -70,7 +70,7 @@ def plot_price_vs_odo_by_owner(data, num_samples, selected_make, selected_model,
             y_pred_full_sorted = y_pred_full_smooth[sorted_indices_full]
 
             # Add data points and regression line for the full data
-            fig.add_trace(go.Scatter(x=X_full.flatten(), y=y_full, mode='markers', name=f'Owners: {no_of_owners} (Full)'))
+            fig.add_trace(go.Scatter(x=X_full.flatten(), y=y_full, mode='markers', name=f'Owners: {no_of_owners} (Full Data)'))
             fig.add_trace(go.Scatter(x=X_smooth_sorted.flatten(), y=y_pred_full_sorted, mode='lines', name=f'Owners: {no_of_owners} (Full 2nd Degree fit)'))
 
             # Store the coefficients and R² value

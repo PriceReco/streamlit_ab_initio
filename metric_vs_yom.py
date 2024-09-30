@@ -132,7 +132,6 @@ def metric_vs_yom_plot(coeff_list_2nd_degree, coeff_list_2nd_degree_sample_point
     plot_type = st.sidebar.radio('Select Plot Type:', ['Intercept vs YOM', 'Coeff1 vs YOM', 'Coeff2 vs YOM'])
     
     
-    
     # Determine the correct figures based on user selection
     if outliers_option == 'With Outliers':
         if plot_type == 'Intercept vs YOM':

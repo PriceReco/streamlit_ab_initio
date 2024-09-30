@@ -1,5 +1,4 @@
 # polynomial_regression.py
-
 import pandas as pd
 import numpy as np
 import plotly.graph_objects as go
@@ -64,7 +63,7 @@ def polynomial_regression(odometer_filtered_data, num_samples, selected_make, se
                                           'Model': selected_model,
                                           'Variant': selected_variant,
                                           'Fuel_Type': selected_fuel_type,
-                                          'Year of Manufacture': name,
+                                          'Year of Manufacture': int(name),
                                           'No_Of_Ownership': selected_no_of_owners,
                                           'Number of Data Points': len(group),
                                           'Intercept (2nd Degree)': intercept_2,
@@ -131,7 +130,7 @@ def polynomial_regression(odometer_filtered_data, num_samples, selected_make, se
                                                       'Model': selected_model,
                                                       'Variant': selected_variant,
                                                       'Fuel_Type': selected_fuel_type,
-                                                      'Year of Manufacture': name,
+                                                      'Year of Manufacture': int(name),
                                                       'No_Of_Ownership': selected_no_of_owners,
                                                       'Number of Data Points': len(sample_data),
                                                       'Intercept (sample points)': intercept_3,
@@ -139,6 +138,7 @@ def polynomial_regression(odometer_filtered_data, num_samples, selected_make, se
                                                       'Coefficient 2 (sample points)': coef_3[2],
                                                       'R² (sample points)': r2_3,
                                                       'Equation (sample points)': equation_3})
+            
 
     # Set plot title and labels for sample points
     fig3.update_layout(
