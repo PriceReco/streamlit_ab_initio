@@ -128,7 +128,7 @@ def metric_vs_ownership_plot(coeff_list_2nd_degree, coeff_list_2nd_degree_sample
 
     # results = create_plots(coeff_full_df, coeff_sample_df, outliers_full, outliers_sample)
     
-    st.sidebar.title('Metric vs YOM')
+    st.sidebar.title('Metric vs Ownership')
 
     # Outliers option: With or Without Outliers
     outliers_option = st.sidebar.radio('Select Outliers Option:', ['With Outliers', 'Without Outliers'])
