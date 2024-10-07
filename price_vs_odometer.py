@@ -30,7 +30,7 @@ def polynomial_regression(odometer_filtered_data, num_samples, selected_make, se
 
             # 2nd-degree polynomial regression using all points
             degree = 2
-            alpha = 0.001  # Ridge regularization strength
+            alpha = 0.01  # Ridge regularization strength
             poly_features_2 = PolynomialFeatures(degree=degree)
             regressor_2 = Ridge(alpha=alpha)
             model_2 = make_pipeline(poly_features_2, regressor_2)
@@ -99,7 +99,7 @@ def polynomial_regression(odometer_filtered_data, num_samples, selected_make, se
 
             degree = 2
             poly_features_3 = PolynomialFeatures(degree=degree)
-            regressor_3 = Ridge(alpha=0.001)
+            regressor_3 = Ridge(alpha=0.01)
             model_3 = make_pipeline(poly_features_3, regressor_3)
             model_3.fit(X_sampled, y_sampled)
 

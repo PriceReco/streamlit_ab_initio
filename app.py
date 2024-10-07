@@ -12,6 +12,7 @@ from sidebar import sidebar_components
 from price_vs_odometer import polynomial_regression
 from price_vs_odometer_by_owner import plot_price_vs_odo_by_owner
 from metric_vs_yom import metric_vs_yom_plot
+from metric_vs_ownership import metric_vs_ownership_plot
 
 
 def filter_data(data: pd.DataFrame, selected_make: str, selected_model: str, selected_variant: str, selected_fuel_type: str, selected_no_of_owners: str) -> pd.DataFrame:
@@ -39,13 +40,16 @@ def main():
     odometer_filtered_data = filtered_data[(filtered_data['Odometer_Reading'] >= selected_odometer_range[0]) &
                                                        (filtered_data['Odometer_Reading'] <= selected_odometer_range[1])]
     
-    print(odometer_filtered_data.value_counts())
     
-    fig_comparison, coeff_df_2nd_degree, coeff_list_2nd_degree_sample_points = polynomial_regression(odometer_filtered_data, num_samples, selected_make, selected_model, selected_variant, selected_fuel_type, selected_no_of_owners)
+    # fig_comparison, coeff_df_2nd_degree, coeff_list_2nd_degree_sample_points = polynomial_regression(odometer_filtered_data, num_samples, selected_make, selected_model, selected_variant, selected_fuel_type, selected_no_of_owners)
+    # fig, coeff_list_2nd_degree_wrt_ownership, coeff_df_2nd_degree_sample_wrt_ownership  = plot_price_vs_odo_by_owner(odometer_filtered_data, num_samples, selected_make, selected_model, selected_variant, selected_fuel_type, selected_no_of_owners)
+
     st.sidebar.title('Settings')
-    option_set = st.sidebar.radio('Select fits:', ['Price vs Odometer Reading', 'Price vs Odo(by Owner)', 'Metric vs YOM'])
+    option_set = st.sidebar.radio('Select fits:', ['Price vs Odometer Reading', 'Metric vs YOM', 'Price vs Odo(by Owner)', 'Metric vs Ownership'])
     
     if  option_set == 'Price vs Odometer Reading':
+        fig_comparison, coeff_df_2nd_degree, coeff_list_2nd_degree_sample_points = polynomial_regression(odometer_filtered_data, num_samples, selected_make, selected_model, selected_variant, selected_fuel_type, selected_no_of_owners)
+
         st.sidebar.title('Price vs Odometer Reading')
         show_plot = st.sidebar.checkbox('Show Plot', value=True)
         show_equation = st.sidebar.checkbox('Show Equation', value=True)
@@ -57,7 +61,8 @@ def main():
             st.dataframe(coeff_df_2nd_degree)
             st.write("### Sample Points Polynomial Regression Coefficients and R²:")
             st.dataframe(coeff_list_2nd_degree_sample_points)
-            
+    
+    
     if option_set == 'Price vs Odo(by Owner)':
         fig, coeff_list_2nd_degree_wrt_ownership, coeff_df_2nd_degree_sample_wrt_ownership  = plot_price_vs_odo_by_owner(odometer_filtered_data, num_samples, selected_make, selected_model, selected_variant, selected_fuel_type, selected_no_of_owners)
         st.plotly_chart(fig)
@@ -71,6 +76,7 @@ def main():
     
 
     if option_set == 'Metric vs YOM':    
+        fig_comparison, coeff_df_2nd_degree, coeff_list_2nd_degree_sample_points = polynomial_regression(odometer_filtered_data, num_samples, selected_make, selected_model, selected_variant, selected_fuel_type, selected_no_of_owners)
 
         fig_full, fig_sample = metric_vs_yom_plot(coeff_df_2nd_degree, coeff_list_2nd_degree_sample_points)
         # Display the selected plots side by side
@@ -79,9 +85,18 @@ def main():
             st.plotly_chart(fig_full)
         with col2:
             st.plotly_chart(fig_sample)
-        
-        
-if __name__ == '__main__':
-    main()
-    
+            
+    if option_set == 'Metric vs Ownership': 
+        fig, coeff_list_2nd_degree_wrt_ownership, coeff_df_2nd_degree_sample_wrt_ownership  = plot_price_vs_odo_by_owner(odometer_filtered_data, num_samples, selected_make, selected_model, selected_variant, selected_fuel_type, selected_no_of_owners)
 
+        fig_full_1, fig_sample_1 = metric_vs_ownership_plot(coeff_list_2nd_degree_wrt_ownership, coeff_df_2nd_degree_sample_wrt_ownership)
+        # Display the selected plots side by side
+        col1, col2 = st.columns(2)
+        with col1:
+            st.plotly_chart(fig_full_1)
+        with col2:
+            st.plotly_chart(fig_sample_1)
+
+
+if __name__ == '__main__':
+    main()    

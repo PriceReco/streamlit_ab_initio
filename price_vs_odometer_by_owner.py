@@ -12,8 +12,6 @@ from sidebar import sidebar_components
 from price_vs_odometer import polynomial_regression
 
 
-
-
 def plot_price_vs_odo_by_owner(data, num_samples, selected_make, selected_model, selected_variant, selected_fuel_type, selected_Mfg_Year):
 
     # Get unique manufacturing years for the selected make, model, variant, and fuel type
@@ -135,11 +133,11 @@ def plot_price_vs_odo_by_owner(data, num_samples, selected_make, selected_model,
                 'Year of Manufacture': selected_Mfg_Year,
                 'No_Of_Ownership': no_of_owners,
                 'Number of Data Points': len(group),
-                'Intercept (2nd Degree)': intercept_2_sample,
-                'Coefficient 1 (2nd Degree)': coef_2_sample[1], 
-                'Coefficient 2 (2nd Degree)': coef_2_sample[2],
-                'R² (2nd Degree)': r2_score(y_sample, model_2_sample.predict(X_sample)),
-                'Equation (2nd Degree)': equation_2_sample
+                'Intercept (sample points)': intercept_2_sample,
+                'Coefficient 1 (sample points)': coef_2_sample[1], 
+                'Coefficient 2 (sample points)': coef_2_sample[2],
+                'R² (sample points)': r2_score(y_sample, model_2_sample.predict(X_sample)),
+                'Equation (sample points)': equation_2_sample
             })
 
     # Set plot title and labels

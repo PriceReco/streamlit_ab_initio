@@ -25,7 +25,7 @@ def create_sidebar(data):
     # min_no_of_owners = data[(data['Make'] == selected_make) & (data['Model'] == selected_model) & (data['Variant'] == selected_variant) & (data['Fuel_Type'] == selected_fuel_type)]['No_Of_Ownership'].min()
     # max_no_of_owners = data[(data['Make'] == selected_make) & (data['Model'] == selected_model) & (data['Variant'] == selected_variant) & (data['Fuel_Type'] == selected_fuel_type)]['No_Of_Ownership'].max()
 
-    selected_no_of_owners = st.sidebar.selectbox('Select No. of Owners:', [1, 2, 3, 'All'])
+    selected_no_of_owners = st.sidebar.selectbox('Select No. of Owners:', [1, 2, 3, 'All'], index=3)
 
     return selected_make, selected_model, selected_variant, selected_fuel_type, selected_no_of_owners
 
