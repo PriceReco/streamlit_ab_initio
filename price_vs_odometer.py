@@ -159,29 +159,35 @@ def polynomial_regression(odometer_filtered_data, num_samples, selected_make, se
     # Plot full set fit
     for index, row in coeff_df_2nd_degree.iterrows():
         x_vals = np.linspace(odometer_filtered_data['Odometer_Reading'].min(), odometer_filtered_data['Odometer_Reading'].max(), 100)
-        y_vals = row['Intercept (2nd Degree)'] + row['Coefficient 1 (2nd Degree)'] * x_vals + row['Coefficient 2 (2nd Degree)'] * (x_vals ** 2)
+        y_vals = (row['Intercept (2nd Degree)'] + row['Coefficient 1 (2nd Degree)'] * x_vals + row['Coefficient 2 (2nd Degree)'] * (x_vals ** 2)) / 100000
+        print(y_vals)
         fig_comparison.add_trace(go.Scatter(x=x_vals, y=y_vals, mode='lines', name=f'Full Data {row["Year of Manufacture"]}'))
-        x_data = odometer_filtered_data[odometer_filtered_data['Mfg_Year'] == row['Year of Manufacture']]
+        # x_data = odometer_filtered_data[odometer_filtered_data['Mfg_Year'] == row['Year of Manufacture']]
         # fig_comparison.add_trace(go.Scatter(x=x_data['Odometer_Reading'], y=x_data['Tradein_MarketPrice'], mode='markers', name=f'Full Data {row["Year of Manufacture"]}'))
 
     # group_data_sample = odometer_filtered_data.sample(n=min(num_samples, len(group)), random_state=42)
     group_data_sample = odometer_filtered_data
 
     # Plot sampled set fit
-    
+
     for index, row in coeff_df_3rd_degree.iterrows():
         x_vals = np.linspace(group_data_sample['Odometer_Reading'].min(), group_data_sample['Odometer_Reading'].max(), 100)
-        y_vals = row['Intercept (sample points)'] + row['Coefficient 1 (sample points)'] * x_vals + row['Coefficient 2 (sample points)'] * (x_vals ** 2)
+        y_vals = (row['Intercept (sample points)'] + row['Coefficient 1 (sample points)'] * x_vals + row['Coefficient 2 (sample points)'] * (x_vals ** 2)) / 100000
         fig_comparison.add_trace(go.Scatter(x=x_vals, y=y_vals, mode='lines', name=f'Sample Points {row["Year of Manufacture"]}', line=dict(dash='dash')))
         group_data_sample_1 = group_data_sample[group_data_sample['Mfg_Year']==row['Year of Manufacture']]
         group_data_sample_1 = group_data_sample_1.sample(n=min(num_samples, len(group_data_sample_1)), random_state=42)
-        x_data = group_data_sample_1[group_data_sample_1['Mfg_Year']==row['Year of Manufacture']]
-        fig_comparison.add_trace(go.Scatter(x=x_data['Odometer_Reading'], y=x_data['Tradein_MarketPrice'], mode='markers', name=f'Sample Data {row["Year of Manufacture"]}'))
+        # x_data = group_data_sample_1[group_data_sample_1['Mfg_Year']==row['Year of Manufacture']]
+        x_data = group_data_sample_1
+        fig_comparison.add_trace(go.Scatter(x=x_data['Odometer_Reading'], y=x_data['Tradein_MarketPrice']/100000, mode='markers', name=f'Sample Data {row["Year of Manufacture"]}'))
 
     fig_comparison.update_layout(
         title=f'Comparison of Polynomial Fits for Full and Sample Data Points ({selected_make} {selected_model} {selected_variant} {selected_fuel_type})',
         xaxis_title='Odometer Reading',
-        yaxis_title='IBB Trade-In Price'
+        yaxis_title='IBB Trade-In Price',
+        yaxis=dict(
+        
+        ticksuffix='L'
     )
-
+    )
+    
     return fig_comparison, coeff_df_2nd_degree, coeff_df_3rd_degree

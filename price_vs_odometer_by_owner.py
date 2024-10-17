@@ -20,6 +20,8 @@ def plot_price_vs_odo_by_owner(data, num_samples, selected_make, selected_model,
                         (data['Variant'] == selected_variant) & 
                         (data['Fuel_Type'] == selected_fuel_type)]['Mfg_Year'].unique()
     
+    Year_options.sort()
+    
     # Allow the user to select a manufacturing year
     selected_Mfg_Year = st.sidebar.selectbox('Select Mfg Year:', Year_options)
 
@@ -65,10 +67,10 @@ def plot_price_vs_odo_by_owner(data, num_samples, selected_make, selected_model,
             # Sort for plotting
             sorted_indices_full = np.argsort(X_smooth.flatten())
             X_smooth_sorted = X_smooth[sorted_indices_full]
-            y_pred_full_sorted = y_pred_full_smooth[sorted_indices_full]
+            y_pred_full_sorted = y_pred_full_smooth[sorted_indices_full]/100000
 
             # Add data points and regression line for the full data
-            fig.add_trace(go.Scatter(x=X_full.flatten(), y=y_full, mode='markers', name=f'Owners: {no_of_owners} (Full Data)'))
+            fig.add_trace(go.Scatter(x=X_full.flatten(), y=y_full/100000, mode='markers', name=f'Owners: {no_of_owners} (Full Data)'))
             fig.add_trace(go.Scatter(x=X_smooth_sorted.flatten(), y=y_pred_full_sorted, mode='lines', name=f'Owners: {no_of_owners} (Full 2nd Degree fit)'))
 
             # Store the coefficients and R² value
@@ -114,10 +116,10 @@ def plot_price_vs_odo_by_owner(data, num_samples, selected_make, selected_model,
             # Sort for plotting
             sorted_indices_full = np.argsort(X_smooth.flatten())
             X_smooth_sorted = X_smooth[sorted_indices_full]
-            y_pred_sample_sorted = y_pred_sample_smooth[sorted_indices_full]
+            y_pred_sample_sorted = y_pred_sample_smooth[sorted_indices_full] / 100000
 
             # Add the sample data points and sample regression line
-            fig.add_trace(go.Scatter(x=X_sample.flatten(), y=y_sample, mode='markers', name=f'Owners: {no_of_owners} (Sample Data)', marker=dict(symbol='x')))
+            fig.add_trace(go.Scatter(x=X_sample.flatten(), y=y_sample/100000, mode='markers', name=f'Owners: {no_of_owners} (Sample Data)', marker=dict(symbol='x')))
             fig.add_trace(go.Scatter(x=X_smooth_sorted.flatten(), y=y_pred_sample_sorted, mode='lines', line=dict(dash='dash'), name=f'Owners: {no_of_owners} (Sample 2nd Degree fit)'))
 
             # Store the coefficients and R² value
@@ -144,7 +146,10 @@ def plot_price_vs_odo_by_owner(data, num_samples, selected_make, selected_model,
     fig.update_layout(
         title=f'2nd Degree Polynomial Fit by Ownership ({selected_make} {selected_model} {selected_variant} {selected_fuel_type}) - Year {selected_Mfg_Year}',
         xaxis_title='Odometer Reading',
-        yaxis_title='IBB Trade-In Price'
+        yaxis_title='IBB Trade-In Price (in Lakhs)',  # Updated y-axis title
+        yaxis=dict(
+            ticksuffix='L'  
+        )
     )
 
     return fig, coeff_list_2nd_degree, coeff_list_2nd_degree_sample

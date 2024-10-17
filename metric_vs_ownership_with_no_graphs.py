@@ -6,7 +6,7 @@ from sidebar import sidebar_components
 import numpy as np
 
 
-def metric_vs_yom_plot(coeff_list_2nd_degree, coeff_list_2nd_degree_sample_points):
+def metric_vs_yom_no_plot(coeff_list_2nd_degree, coeff_list_2nd_degree_sample_points):
     # Function to plot metrics vs. year of manufacture with trendlines
     equation_arr = []
     
@@ -29,7 +29,6 @@ def metric_vs_yom_plot(coeff_list_2nd_degree, coeff_list_2nd_degree_sample_point
             marker=dict(color='blue')
         ))
 
-        
         # Highlight outlier points if available
         if outlier_points is not None and not outlier_points.empty:
             fig.add_trace(go.Scatter(
@@ -140,39 +139,5 @@ def metric_vs_yom_plot(coeff_list_2nd_degree, coeff_list_2nd_degree_sample_point
     results.append({"Metric": "Coefficient 2 (Sample Data, Without Outliers)", "Equation": eq_coefficient2_sample_without_outliers, "R²": r2_coefficient2_sample_without_outliers})
 
 
-    # results = create_plots(coeff_full_df, coeff_sample_df, outliers_full, outliers_sample)
-    
-    st.sidebar.title('Metric vs YOM')
-
-    # Outliers option: With or Without Outliers
-    outliers_option = st.sidebar.radio('Select Outliers Option:', ['With Outliers', 'Without Outliers'])
-    
-    # Plot type selection: Intercept, Coeff1, or Coeff2 vs YOM
-    plot_type = st.sidebar.radio('Select Plot Type:', ['Intercept vs YOM', 'Coeff1 vs YOM', 'Coeff2 vs YOM'])
-    
-    
-    # Determine the correct figures based on user selection
-    if outliers_option == 'With Outliers':
-        if plot_type == 'Intercept vs YOM':
-            fig_full = fig_intercept_full_with_outliers
-            fig_sample = fig_intercept_sample_with_outliers
-        elif plot_type == 'Coeff1 vs YOM':
-            fig_full = fig_coefficient1_full_with_outliers
-            fig_sample = fig_coefficient1_sample_with_outliers
-        elif plot_type == 'Coeff2 vs YOM':
-            fig_full = fig_coefficient2_full_with_outliers
-            fig_sample = fig_coefficient2_sample_with_outliers
-    else:  # Without Outliers
-        if plot_type == 'Intercept vs YOM':
-            fig_full = fig_intercept_full_without_outliers
-            fig_sample = fig_intercept_sample_without_outliers
-        elif plot_type == 'Coeff1 vs YOM':
-            fig_full = fig_coefficient1_full_without_outliers
-            fig_sample = fig_coefficient1_sample_without_outliers
-        elif plot_type == 'Coeff2 vs YOM':
-            fig_full = fig_coefficient2_full_without_outliers
-            fig_sample = fig_coefficient2_sample_without_outliers
-
-
-    return fig_full, fig_sample, equation_arr
+    return  equation_arr
 

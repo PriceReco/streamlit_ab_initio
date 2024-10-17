@@ -7,7 +7,7 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-def create_sidebar(data):
+def create_sidebar(data, radio_button=None):
     st.sidebar.title("Filter Options")
 
     make_options = data['Make'].unique()
@@ -27,10 +27,39 @@ def create_sidebar(data):
 
     selected_no_of_owners = st.sidebar.selectbox('Select No. of Owners:', [1, 2, 3, 'All'], index=3)
 
-    return selected_make, selected_model, selected_variant, selected_fuel_type, selected_no_of_owners
+    if radio_button is None:
+        return selected_make, selected_model, selected_variant, selected_fuel_type, selected_no_of_owners
+    else:
+        # Get unique manufacturing years for the selected make, model, variant, and fuel type
+        Year_options = data[(data['Make'] == selected_make) & 
+                            (data['Model'] == selected_model) & 
+                            (data['Variant'] == selected_variant) & 
+                            (data['Fuel_Type'] == selected_fuel_type)]['Mfg_Year'].unique()
+        
+        Year_options = list(map(str, Year_options)) + ['All']    
+        
+        # Allow the user to select a manufacturing year
+        selected_Mfg_Year = st.sidebar.selectbox('Select Mfg Year:', Year_options, index=len(Year_options)-1)
+        # selected_Mfg_Year = int(selected_Mfg_Year)  # Convert back to integer
 
 
-def configure_sidebar(filtered_data: pd.DataFrame) -> tuple:
+        if selected_Mfg_Year == 'All':
+            filtered_data_year = data[(data['Make'] == selected_make) &
+                                (data['Model'] == selected_model) &
+                                (data['Variant'] == selected_variant) &
+                                (data['Fuel_Type'] == selected_fuel_type)]
+        else:
+            filtered_data_year = data[(data['Make'] == selected_make) &
+                                (data['Model'] == selected_model) &
+                                (data['Variant'] == selected_variant) &
+                                (data['Fuel_Type'] == selected_fuel_type) &
+                                (data['Mfg_Year'] == int(selected_Mfg_Year))]
+                                
+                                
+        return selected_make, selected_model, selected_variant, selected_fuel_type, selected_no_of_owners, filtered_data_year
+
+
+def configure_sidebar_odometer_reading(filtered_data: pd.DataFrame) -> tuple:
     st.sidebar.markdown("<h3>Select KM Range & No. of Points for Sample Data</h3>", unsafe_allow_html=True)
     # odometer_min = int(filtered_data['Odometer_Reading'].min())
     odometer_min = 0
@@ -40,9 +69,59 @@ def configure_sidebar(filtered_data: pd.DataFrame) -> tuple:
                                                 max_value=odometer_max,
                                                 value=(odometer_min, odometer_max))
     
-    num_samples = st.sidebar.slider('Select Number of Samples for 2nd Degree Fit (Sample Points):',
-                                    min_value=1,
-                                    max_value=30,
-                                    value=5)
+    return selected_odometer_range
+
+
+def configure_sidebar_number_of_samples(filtered_data: pd.DataFrame) -> tuple:
     
-    return selected_odometer_range, num_samples
+    num_samples = st.sidebar.slider('Select Number of Samples for 2nd Degree Fit (Sample Points):',
+                                min_value=1,
+                                max_value=30,
+                                value=5)
+    
+    return num_samples
+
+
+def radio_button():
+    st.sidebar.title('Settings')
+    option_set = st.sidebar.radio('Select fits:', ['Price vs Odo(by Owner) for all Year', 'future price', 'New Car Price v/s Ibb Price', 'Price vs Odometer Reading', 'Metric vs YOM', 'Price vs Odo(by Owner)', 'Metric vs Ownership'])
+    
+    return option_set
+
+
+
+def get_filtered_year_data(odometer_filtered_data, selected_make, selected_model, selected_variant, selected_fuel_type, selected_no_of_owners ):
+    
+    # Get unique manufacturing years for the selected make, model, variant, and fuel type
+    Year_options = odometer_filtered_data[(odometer_filtered_data['Make'] == selected_make) & 
+                        (odometer_filtered_data['Model'] == selected_model) & 
+                        (odometer_filtered_data['Variant'] == selected_variant) & 
+                        (odometer_filtered_data['Fuel_Type'] == selected_fuel_type)]['Mfg_Year'].unique()
+    
+    Year_options.sort()
+    print(Year_options)
+    
+    Year_options = list(map(str, Year_options)) + ['All']    
+    
+    # Allow the user to select a manufacturing year
+    selected_Mfg_Year = st.sidebar.selectbox('Select Mfg Year:', Year_options, index=len(Year_options)-1)
+    # selected_Mfg_Year = int(selected_Mfg_Year)  # Convert back to integer
+
+
+    if selected_Mfg_Year == 'All':
+        filtered_data_year = odometer_filtered_data[(odometer_filtered_data['Make'] == selected_make) &
+                             (odometer_filtered_data['Model'] == selected_model) &
+                             (odometer_filtered_data['Variant'] == selected_variant) &
+                             (odometer_filtered_data['Fuel_Type'] == selected_fuel_type)]
+    else:
+        filtered_data_year = odometer_filtered_data[(odometer_filtered_data['Make'] == selected_make) &
+                             (odometer_filtered_data['Model'] == selected_model) &
+                             (odometer_filtered_data['Variant'] == selected_variant) &
+                             (odometer_filtered_data['Fuel_Type'] == selected_fuel_type) &
+                             (odometer_filtered_data['Mfg_Year'] == int(selected_Mfg_Year))]
+                             
+                             
+    return filtered_data_year
+    
+    
+    
