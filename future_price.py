@@ -226,7 +226,7 @@ def polynomial_regression_future_price(odometer_filtered_data, num_samples, sele
     # manf.append(manf[-1] + 1)
     coeff_list_2nd_degree_future_price = []
     
-    for i in range(2):            
+    for i in range(3):            
         
         year = manf[-1] + i + 1
 

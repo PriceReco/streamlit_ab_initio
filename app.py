@@ -149,7 +149,7 @@ def main():
         st.dataframe(coeff_list_2nd_degree_wrt_ownership)
     
     
-    if  option_set == 'future price':
+    if  option_set == 'Future Price':
         
         selected_odometer_range = sidebar_components.configure_sidebar_odometer_reading(filtered_data_no_outliers)
 

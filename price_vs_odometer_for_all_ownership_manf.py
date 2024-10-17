@@ -65,56 +65,59 @@ def plot_price_vs_odo_by_owner_for_all_manf(odometer_filtered_data, selected_mak
             grouped_data = group.groupby('No_Of_Ownership')
             
             for num_owner, subgroup in grouped_data:
-                print(num_owner)
-                print(subgroup)
                 
-            
-                X = subgroup['Odometer_Reading'].values.reshape(-1, 1)
-                y = subgroup['Tradein_MarketPrice'].values
+                if len(subgroup) > 2:
+                
+                    print(num_owner)
+                    print(subgroup)
+                    
+                
+                    X = subgroup['Odometer_Reading'].values.reshape(-1, 1)
+                    y = subgroup['Tradein_MarketPrice'].values
 
-                # 2nd-degree polynomial regression using all points
-                degree = 2
-                alpha = 0.01  # Ridge regularization strength
-                poly_features_2 = PolynomialFeatures(degree=degree)
-                regressor_2 = Ridge(alpha=alpha)
-                model_2 = make_pipeline(poly_features_2, regressor_2)
-                model_2.fit(X, y)
+                    # 2nd-degree polynomial regression using all points
+                    degree = 2
+                    alpha = 0.01  # Ridge regularization strength
+                    poly_features_2 = PolynomialFeatures(degree=degree)
+                    regressor_2 = Ridge(alpha=alpha)
+                    model_2 = make_pipeline(poly_features_2, regressor_2)
+                    model_2.fit(X, y)
 
-                # Make predictions over a range of values for a smoother curve
-                X_range = np.linspace(X.min(), X.max(), 100).reshape(-1, 1)
-                y_pred_2 = model_2.predict(X_range)
+                    # Make predictions over a range of values for a smoother curve
+                    X_range = np.linspace(X.min(), X.max(), 100).reshape(-1, 1)
+                    y_pred_2 = model_2.predict(X_range)
 
-                # Calculate R² value
-                y_pred_train_2 = model_2.predict(X)
-                r2_2 = r2_score(y, y_pred_train_2)
+                    # Calculate R² value
+                    y_pred_train_2 = model_2.predict(X)
+                    r2_2 = r2_score(y, y_pred_train_2)
 
-                # Sort the values for plotting
-                sorted_indices = np.argsort(X_range.flatten())
-                X_sorted = X_range[sorted_indices]
-                y_pred_2_sorted = y_pred_2[sorted_indices]
+                    # Sort the values for plotting
+                    sorted_indices = np.argsort(X_range.flatten())
+                    X_sorted = X_range[sorted_indices]
+                    y_pred_2_sorted = y_pred_2[sorted_indices]
 
-                # Plot the data and regression fits for 2nd degree
-                fig2.add_trace(go.Scatter(x=X.flatten(), y=y, mode='markers', name=f'Year {name}'))
-                fig2.add_trace(go.Scatter(x=X_sorted.flatten(), y=y_pred_2_sorted, mode='lines', name=f'{name} (2nd Degree fit)'))
+                    # Plot the data and regression fits for 2nd degree
+                    fig2.add_trace(go.Scatter(x=X.flatten(), y=y, mode='markers', name=f'Year {name}'))
+                    fig2.add_trace(go.Scatter(x=X_sorted.flatten(), y=y_pred_2_sorted, mode='lines', name=f'{name} (2nd Degree fit)'))
 
-                # Get the coefficients of the polynomial regression fits
-                intercept_2 = model_2.named_steps['ridge'].intercept_
-                coef_2 = model_2.named_steps['ridge'].coef_
-                equation_2 = f'y = {intercept_2:.3f} + {coef_2[1]:.3f}x + {coef_2[2]:.8f}x^2'
+                    # Get the coefficients of the polynomial regression fits
+                    intercept_2 = model_2.named_steps['ridge'].intercept_
+                    coef_2 = model_2.named_steps['ridge'].coef_
+                    equation_2 = f'y = {intercept_2:.3f} + {coef_2[1]:.3f}x + {coef_2[2]:.8f}x^2'
 
-                # Store the coefficients and R² in the list
-                coeff_list_2nd_degree.append({'Make': selected_make,
-                                            'Model': selected_model,
-                                            'Variant': selected_variant,
-                                            'Fuel_Type': selected_fuel_type,
-                                            'Year of Manufacture': int(name),
-                                            'No_Of_Ownership': num_owner,
-                                            'Number of Data Points': len(group),
-                                            'Intercept (2nd Degree)': intercept_2,
-                                            'Coefficient 1 (2nd Degree)': coef_2[1],
-                                            'Coefficient 2 (2nd Degree)': coef_2[2],
-                                            'R² (2nd Degree)': r2_2,
-                                            'Equation (2nd Degree)': equation_2})
+                    # Store the coefficients and R² in the list
+                    coeff_list_2nd_degree.append({'Make': selected_make,
+                                                'Model': selected_model,
+                                                'Variant': selected_variant,
+                                                'Fuel_Type': selected_fuel_type,
+                                                'Year of Manufacture': int(name),
+                                                'No_Of_Ownership': num_owner,
+                                                'Number of Data Points': len(subgroup),
+                                                'Intercept (2nd Degree)': intercept_2,
+                                                'Coefficient 1 (2nd Degree)': coef_2[1],
+                                                'Coefficient 2 (2nd Degree)': coef_2[2],
+                                                'R² (2nd Degree)': r2_2,
+                                                'Equation (2nd Degree)': equation_2})
 
         # Set plot title and labels for 2nd degree
         fig2.update_layout(

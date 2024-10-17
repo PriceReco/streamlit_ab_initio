@@ -60,7 +60,7 @@ def create_sidebar(data, radio_button=None):
 
 
 def configure_sidebar_odometer_reading(filtered_data: pd.DataFrame) -> tuple:
-    st.sidebar.markdown("<h3>Select KM Range & No. of Points for Sample Data</h3>", unsafe_allow_html=True)
+    # st.sidebar.markdown("<h3>Select KM Range & No. of Points for Sample Data</h3>", unsafe_allow_html=True)
     # odometer_min = int(filtered_data['Odometer_Reading'].min())
     odometer_min = 0
     odometer_max = int(filtered_data['Odometer_Reading'].max())
@@ -84,10 +84,9 @@ def configure_sidebar_number_of_samples(filtered_data: pd.DataFrame) -> tuple:
 
 def radio_button():
     st.sidebar.title('Settings')
-    option_set = st.sidebar.radio('Select fits:', ['Price vs Odo(by Owner) for all Year', 'future price', 'New Car Price v/s Ibb Price', 'Price vs Odometer Reading', 'Metric vs YOM', 'Price vs Odo(by Owner)', 'Metric vs Ownership'])
+    option_set = st.sidebar.radio('Select fits:', ['Price vs Odo(by Owner) for all Year', 'Future Price', 'New Car Price v/s Ibb Price', 'Price vs Odometer Reading', 'Metric vs YOM', 'Price vs Odo(by Owner)', 'Metric vs Ownership'])
     
     return option_set
-
 
 
 def get_filtered_year_data(odometer_filtered_data, selected_make, selected_model, selected_variant, selected_fuel_type, selected_no_of_owners ):
