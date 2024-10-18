@@ -37,9 +37,7 @@ def plot_price_vs_odo_by_owner_for_all_manf(odometer_filtered_data, selected_mak
     #                          (odometer_filtered_data['Variant'] == selected_variant) &
     #                          (odometer_filtered_data['Fuel_Type'] == selected_fuel_type) &
     #                          (odometer_filtered_data['Mfg_Year'] == int(selected_Mfg_Year))]
-        
-                         
-                            
+   
     # Group data by year of manufacture
     grouped_data = odometer_filtered_data.groupby('Mfg_Year')
 
@@ -134,11 +132,23 @@ def plot_price_vs_odo_by_owner_for_all_manf(odometer_filtered_data, selected_mak
     
     grouped_data = odometer_filtered_data.groupby('Mfg_Year')
 
-
-    ownership_colors = ['#1f77b4', '#3D9970', '#FF851B']
-
-    for index, row in coeff_df_2nd_degree.iterrows():
+    if coeff_df_2nd_degree.shape == (6, 12):   
+        manf = ['#1f77b4', '#1f77b4', '#3D9970', '#3D9970', '#FF851B', '#FF851B']
+        opacity = [1, 0.8, 0.8]  
+    else:
+        manf = ['#1f77b4', '#1f77b4', '#1f77b4', '#FF851B', '#FF851B', '#FF851B', '#3D9970', '#3D9970', '#3D9970']
+        opacity = [1, 0.8, 0.5]
+    
         
+    
+    print(coeff_df_2nd_degree.shape)
+    
+    i = 0
+    
+    # print(coeff_df_2nd_degree['No_Of_Ownership'].max())
+    
+    
+    for index, row in coeff_df_2nd_degree.iterrows():
         x_vals = np.linspace(odometer_filtered_data['Odometer_Reading'].min(), odometer_filtered_data['Odometer_Reading'].max(), 100)
         
         # Calculate y values and convert to lakhs
@@ -147,11 +157,23 @@ def plot_price_vs_odo_by_owner_for_all_manf(odometer_filtered_data, selected_mak
                 row['Coefficient 2 (2nd Degree)'] * (x_vals ** 2)) / 100000  # Convert to lakhs
         
         # Get the color for the current ownership
-        color = ownership_colors[row['No_Of_Ownership'] % len(ownership_colors)]  # Cycle through the colors for each ownership
+        # color = ownership_colors[row['No_Of_Ownership'] % len(ownership_colors)]  # Cycle through the colors for each ownership
+        
+        # print(color)
         
         # Add the line trace with color
-        fig_comparison.add_trace(go.Scatter(x=x_vals, y=y_vals, mode='lines', name=f'Owners: {row['No_Of_Ownership']} Year {row["Year of Manufacture"]}', line=dict(color=color)))
+        fig_comparison.add_trace(go.Scatter(x=x_vals, y=y_vals, mode='lines', name=f'Owners: {row['No_Of_Ownership']} Year {row["Year of Manufacture"]}', line=dict(color=manf[index]),
+                                            opacity=opacity[i]))
         
+        # if coeff_df_2nd_degree['No_Of_Ownership'].max() == 3: 
+
+        
+        if i == 2:
+            i = -1
+        
+        i += 1
+
+                
         # Filter data for the current year of manufacture
         x_data = odometer_filtered_data[odometer_filtered_data['Mfg_Year'] == row['Year of Manufacture']]
 

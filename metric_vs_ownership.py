@@ -164,4 +164,3 @@ def metric_vs_ownership_plot(coeff_list_2nd_degree, coeff_list_2nd_degree_sample
     return fig_full, fig_sample
 
 
-
