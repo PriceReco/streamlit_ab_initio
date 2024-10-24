@@ -197,10 +197,8 @@ def polynomial_regression_future_price(odometer_filtered_data, num_samples, sele
     # Convert the list of coefficients and R² values into DataFrames and display them
     coeff_df_2nd_degree = pd.DataFrame(coeff_list_2nd_degree)
 
-
     # Visual Comparison
     fig_comparison = go.Figure()
-    
     grouped_data = odometer_filtered_data.groupby('Mfg_Year')
 
     # Plot full set fit
@@ -254,7 +252,7 @@ def polynomial_regression_future_price(odometer_filtered_data, num_samples, sele
 
         for i in x_vals:
             # print(i)
-            price = (intercept + coef_1 * i - coef_2 * (i **2)) / 100000
+            price = (intercept + coef_1 * i + coef_2 * (i **2)) / 100000
             # price = price / 100000
             y.append(price)
         

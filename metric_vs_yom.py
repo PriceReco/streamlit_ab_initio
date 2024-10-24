@@ -58,9 +58,15 @@ def metric_vs_yom_plot(coeff_list_2nd_degree, coeff_list_2nd_degree_sample_point
         
         # Prepare equation string
         equation = f"y = {z[0]:.4f}x + {z[1]:.4f}"
+        
+        
+        print(equation)
 
         equation_arr.append(z[0])
         equation_arr.append(z[1])
+        
+        print(equation_arr)
+        
         # print(z)
         # print(equation_arr[0])
         # print(z[0], z[1])
