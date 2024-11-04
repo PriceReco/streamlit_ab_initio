@@ -246,8 +246,6 @@ def polynomial_regression_future_price(odometer_filtered_data, num_samples, sele
                                         # 'R² (2nd Degree)': r2_2,
                                         'Equation (2nd Degree)': equation_2})
         
-            
-
         y = []
 
         for i in x_vals:
@@ -256,7 +254,7 @@ def polynomial_regression_future_price(odometer_filtered_data, num_samples, sele
             # price = price / 100000
             y.append(price)
         
-            
+                    
         print(y)
         # print(len(y))
         df_future_price = pd.DataFrame()
@@ -281,15 +279,12 @@ def polynomial_regression_future_price(odometer_filtered_data, num_samples, sele
                     # tickformat=".1f",
                     ticksuffix='L'
                     )
-
         )
         
         
     coeff_df_2nd_degree_future = pd.DataFrame(coeff_list_2nd_degree_future_price)
 
-        
+
     return fig_comparison, coeff_df_2nd_degree, coeff_df_2nd_degree_future
-
-
 
 
