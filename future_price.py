@@ -110,9 +110,6 @@ def polynomial_regression_future_price(odometer_filtered_data, num_samples, sele
         coef_1 = equation_arr[2] * manf + equation_arr[3]
         coef_2 = equation_arr[4] * manf + equation_arr[5]
         
-        print(intercept)
-        print(coef_1)
-        print(coef_2)
         
         return intercept, coef_1, coef_2
     
@@ -121,7 +118,6 @@ def polynomial_regression_future_price(odometer_filtered_data, num_samples, sele
     # Group data by year of manufacture
 
     grouped_data = odometer_filtered_data.groupby('Mfg_Year')
-    print(equation_arr)
     # Initialize the plots
     fig2 = go.Figure()
     fig3 = go.Figure()
@@ -209,19 +205,13 @@ def polynomial_regression_future_price(odometer_filtered_data, num_samples, sele
         # x_data = odometer_filtered_data[odometer_filtered_data['Mfg_Year'] == row['Year of Manufacture']]
         # fig_comparison.add_trace(go.Scatter(x=x_data['Odometer_Reading'], y=x_data['Tradein_MarketPrice'], mode='markers', name=f'Full Data {row["Year of Manufacture"]}'))
 
-    print(x_vals[0])
-    
-    print(len(x_vals))
-    
-    print(y_vals)
     
     coeff_df_2nd_degree['Year of Manufacture'].value_counts()
     
     
     manf = coeff_df_2nd_degree['Year of Manufacture'].value_counts().index
     manf = list(manf)
-    # print(manf)
-    # manf.append(manf[-1] + 1)
+
     coeff_list_2nd_degree_future_price = []
     
     for i in range(3):            
@@ -249,13 +239,11 @@ def polynomial_regression_future_price(odometer_filtered_data, num_samples, sele
         y = []
 
         for i in x_vals:
-            # print(i)
             price = (intercept + coef_1 * i + coef_2 * (i **2)) / 100000
             # price = price / 100000
             y.append(price)
         
                     
-        print(y)
         # print(len(y))
         df_future_price = pd.DataFrame()
     

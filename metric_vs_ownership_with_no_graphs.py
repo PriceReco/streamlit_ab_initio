@@ -60,9 +60,6 @@ def metric_vs_yom_no_plot(coeff_list_2nd_degree, coeff_list_2nd_degree_sample_po
 
         equation_arr.append(z[0])
         equation_arr.append(z[1])
-        # print(z)
-        # print(equation_arr[0])
-        # print(z[0], z[1])
         
         # Set the layout of the figure
         fig.update_layout(
@@ -72,8 +69,6 @@ def metric_vs_yom_no_plot(coeff_list_2nd_degree, coeff_list_2nd_degree_sample_po
             xaxis=dict(tickmode='array', tickvals=df['Year of Manufacture'].unique(), ticktext=df['Year of Manufacture'].unique()),
             showlegend=True
         )
-
-        # print(equation_arr)
         
         return fig, equation, r_squared
 
@@ -89,7 +84,6 @@ def metric_vs_yom_no_plot(coeff_list_2nd_degree, coeff_list_2nd_degree_sample_po
     )]
 
 
-    print(coeff_sample_df)
 
     outliers_sample = coeff_sample_df[(
         (coeff_sample_df['Intercept (sample points)'] > coeff_sample_df['Intercept (sample points)'].quantile(0.75) + 1.5 * (coeff_sample_df['Intercept (sample points)'].quantile(0.75) - coeff_sample_df['Intercept (sample points)'].quantile(0.25))) |

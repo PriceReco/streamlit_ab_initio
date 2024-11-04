@@ -158,9 +158,7 @@ def main():
 
         num_samples = 5
         fig_comparison, coeff_df_2nd_degree, coeff_list_2nd_degree_sample_points = polynomial_regression(odometer_filtered_data, num_samples, selected_make, selected_model, selected_variant, selected_fuel_type, selected_no_of_owners)
-        
-        print(coeff_df_2nd_degree)
-        
+                
         equation_arr = metric_vs_yom_no_plot(coeff_df_2nd_degree, coeff_list_2nd_degree_sample_points)
         
         fig_comparison, coeff_df_2nd_degree, coeff_df_2nd_degree_future_price = polynomial_regression_future_price(odometer_filtered_data, num_samples, selected_make, selected_model, selected_variant, selected_fuel_type, selected_no_of_owners, equation_arr)

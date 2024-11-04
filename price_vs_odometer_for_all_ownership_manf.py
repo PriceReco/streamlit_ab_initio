@@ -54,8 +54,6 @@ def plot_price_vs_odo_by_owner_for_all_manf(odometer_filtered_data, selected_mak
 
     # Loop through each group (year of manufacture) and plot the data and polynomial regression fits for 2nd degree
     for name, group in grouped_data:
-        print(name)
-        print(group)
         
         if len(group) > 2:  # Filter groups with less than 3 data points
             # Split the data into independent variables (X) and target variable (y)
@@ -65,10 +63,6 @@ def plot_price_vs_odo_by_owner_for_all_manf(odometer_filtered_data, selected_mak
             for num_owner, subgroup in grouped_data:
                 
                 if len(subgroup) > 2:
-                
-                    print(num_owner)
-                    print(subgroup)
-                    
                 
                     X = subgroup['Odometer_Reading'].values.reshape(-1, 1)
                     y = subgroup['Tradein_MarketPrice'].values
@@ -139,10 +133,7 @@ def plot_price_vs_odo_by_owner_for_all_manf(odometer_filtered_data, selected_mak
         manf = ['#1f77b4', '#1f77b4', '#1f77b4', '#FF851B', '#FF851B', '#FF851B', '#3D9970', '#3D9970', '#3D9970']
         opacity = [1, 0.8, 0.5]
     
-        
-    
-    print(coeff_df_2nd_degree.shape)
-    
+            
     i = 0
     
     # print(coeff_df_2nd_degree['No_Of_Ownership'].max())
@@ -158,9 +149,7 @@ def plot_price_vs_odo_by_owner_for_all_manf(odometer_filtered_data, selected_mak
         
         # Get the color for the current ownership
         # color = ownership_colors[row['No_Of_Ownership'] % len(ownership_colors)]  # Cycle through the colors for each ownership
-        
-        # print(color)
-        
+                
         # Add the line trace with color
         fig_comparison.add_trace(go.Scatter(x=x_vals, y=y_vals, mode='lines', name=f'Owners: {row['No_Of_Ownership']} Year {row["Year of Manufacture"]}', line=dict(color=manf[index]),
                                             opacity=opacity[i]))

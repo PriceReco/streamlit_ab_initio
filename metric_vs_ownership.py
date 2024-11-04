@@ -17,8 +17,6 @@ def metric_vs_ownership_plot(coeff_list_2nd_degree, coeff_list_2nd_degree_sample
         else:
             df_without_outliers = df
             
-        print(df_without_outliers)
-
         # Plot the main data points
         fig.add_trace(go.Scatter(   
             x=df['No_Of_Ownership'],
@@ -83,8 +81,6 @@ def metric_vs_ownership_plot(coeff_list_2nd_degree, coeff_list_2nd_degree_sample
         (coeff_sample_df['Coefficient 2 (sample points)'] > coeff_sample_df['Coefficient 2 (sample points)'].quantile(0.75) + 1.5 * (coeff_sample_df['Coefficient 2 (sample points)'].quantile(0.75) - coeff_sample_df['Coefficient 2 (sample points)'].quantile(0.25)))
     )]
     
-    # print(coeff_sample_df)
-
     # Create DataFrame to store equations and R-squared values
     results = []
 

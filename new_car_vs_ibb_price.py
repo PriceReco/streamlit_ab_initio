@@ -38,15 +38,10 @@ def new_price_vs_ibb_price_ctdms_price():
     # Display the variant prices DataFrame in Streamlit
     st.write(f"##### Toyota Innova Crysta Car Price For {selected_year} Manufacturing Year ")
     
-    print(variant_prices)
     # To ungroup (reset the index)
     ungrouped_df = variant_prices.reset_index()
-
-    print(variant_prices)
     
     # Rename the 'index' column to 'Variant'
     ungrouped_df.rename(columns={'index': 'Variant'}, inplace=True)
-
-    print(ungrouped_df)
     
     st.dataframe(variant_prices)
